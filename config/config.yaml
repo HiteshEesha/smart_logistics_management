@@ -1,0 +1,19 @@
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: root
+  database: smart_logistics
+
+application:
+  batch_size: 5000
+  log_level: INFO
+  log_directory: logs
+
+validation:
+  stop_on_error: false
+  generate_error_report: true
+  report_directory: reports
+
+files:
+  input_directory: datasets
