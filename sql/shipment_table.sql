@@ -1,5 +1,5 @@
 use smart_logistics;
-
+ma
 
 CREATE TABLE shipment (
     shipment_id VARCHAR(50) PRIMARY KEY,

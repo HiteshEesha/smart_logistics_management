@@ -4,29 +4,32 @@ TABLE_CONFIG = {
     # Courier Staff
     # =====================================================
 
-    "courier_staff": {
+    "routes": {
 
-        "file": "data/courier.csv",
+        "file": "data/routes.csv",
 
-        "primary_key": "courier_id",
+        "primary_key": "route_id",
 
         "required_columns": [
-            "courier_id",
-            "courier_name",
-            "phone_number"
+            "route_id",
+            "origin",
+            "destination",
+            "distance_km",
+            "avg_time_hours"
         ],
 
         "duplicate_columns": [
-            "courier_id"
+            "route_id"
         ],
 
         "foreign_keys": {},
 
         "data_types": {
-            "courier_id": int,
-            "courier_name": str,
-            "phone_number": str,
-            "salary": float
+            "route_id":str,
+            "origin":str,
+            "destination":str,
+            "distance_km":float,
+            "avg_time_hours":float
         },
 
         "business_rules": {
@@ -38,8 +41,42 @@ TABLE_CONFIG = {
         "validators": [
             "null",
             "datatype",
-            "duplicate",
-            "business"
+            "duplicate"
+        ]
+    },
+    "courier_staff": {
+
+       "file": "data/courier_staff.csv",
+
+        "primary_key": "courier_id",
+
+        "required_columns": [
+            "courier_id",
+            "name",
+            "rating",
+            "vehicle_type"
+        ],
+
+        "duplicate_columns": [
+            "courier_id"
+        ],
+
+        "foreign_keys": {},
+
+        "data_types": {
+            "courier_id": str,
+            "name": str,
+            "vehicle_type": str,
+            "rating": float
+        },
+
+        "business_rules": {
+        },
+
+        "validators": [
+            "null",
+            "datatype",
+            "duplicate"
         ]
     },
 
@@ -47,16 +84,17 @@ TABLE_CONFIG = {
     # Warehouse
     # =====================================================
 
-    "warehouse": {
+    "warehouses": {
 
-        "file": "data/warehouse.csv",
+        "file": "data/warehouses.json",
 
         "primary_key": "warehouse_id",
 
         "required_columns": [
             "warehouse_id",
-            "warehouse_name",
-            "city"
+            "state",
+            "city",
+            "capacity"
         ],
 
         "duplicate_columns": [
@@ -66,23 +104,22 @@ TABLE_CONFIG = {
         "foreign_keys": {},
 
         "data_types": {
-            "warehouse_id": int,
-            "warehouse_name": str,
+            "warehouse_id": str,
+            "state": str,
             "city": str,
             "capacity": int
         },
 
         "business_rules": {
-            "capacity": {
+            """"capacity": {
                 "min": 1
-            }
+            } """
         },
 
         "validators": [
             "null",
             "datatype",
-            "duplicate",
-            "business"
+            "duplicate"
         ]
     },
 
@@ -92,7 +129,7 @@ TABLE_CONFIG = {
 
     "shipment": {
 
-        "file": "data/shipment.csv",
+        "file": "data/shipments.json",
 
         "primary_key": "shipment_id",
 
@@ -100,35 +137,25 @@ TABLE_CONFIG = {
 
             "shipment_id",
 
-            "shipment_number",
+            "origin",
 
-            "warehouse_id",
+            "destination",
+
+            "weight",
 
             "courier_id",
 
-            "shipment_date",
-
-            "quantity",
-
-            "shipping_cost"
+            "status"
         ],
 
         "duplicate_columns": [
 
-            "shipment_number"
+            "shipment_id"
         ],
 
         "foreign_keys": {
 
-            "warehouse_id": {
-
-                "table": "warehouse",
-
-                "column": "warehouse_id"
-
-            },
-
-            "courier_id": {
+                     "courier_id": {
 
                 "table": "courier_staff",
 
@@ -140,40 +167,26 @@ TABLE_CONFIG = {
 
         "data_types": {
 
-            "shipment_id": int,
+            "shipment_id": str,
 
-            "shipment_number": str,
+            "status": str,
 
-            "warehouse_id": int,
+            "weight": float,
 
-            "courier_id": int,
-
-            "shipment_date": "datetime",
+            "courier_id": str,
 
             "delivery_date": "datetime",
 
-            "quantity": int,
+            "order_date": "datetime",
 
-            "shipping_cost": float,
+            "origin": str,
 
-            "status": str
+            "destination": str
         },
 
         "business_rules": {
 
-            "quantity": {
-
-                "min": 1
-
-            },
-
-            "shipping_cost": {
-
-                "min": 0
-
-            },
-
-            "shipment_date": {
+         """   "shipment_date": {
 
                 "future_allowed": False
 
@@ -183,7 +196,7 @@ TABLE_CONFIG = {
 
                 "after": "shipment_date"
 
-            }
+            }"""
         },
 
         "validators": [
@@ -194,9 +207,7 @@ TABLE_CONFIG = {
 
             "duplicate",
 
-            "foreign_key",
-
-            "business"
+            "foreign_key"
 
         ]
     },
@@ -205,25 +216,25 @@ TABLE_CONFIG = {
     # Shipment Cost
     # =====================================================
 
-    "shipment_cost": {
+    "costs": {
 
-        "file": "data/shipment_cost.csv",
-
-        "primary_key": "cost_id",
+        "file": "data/costs.csv",
 
         "required_columns": [
 
-            "cost_id",
+            "fuel_cost",
 
             "shipment_id",
 
-            "amount"
+            "misc_cost",
+
+            "labor_cost"
 
         ],
 
         "duplicate_columns": [
 
-            "cost_id"
+            "shipment_id"
 
         ],
 
@@ -241,11 +252,78 @@ TABLE_CONFIG = {
 
         "data_types": {
 
-            "cost_id": int,
+            "shipment_id": str,
 
-            "shipment_id": int,
+            "labor_cost": float,
 
-            "amount": float
+            "misc_cost": float,
+
+            "fuel_cost": float
+
+        },
+
+        "business_rules": {
+
+           },
+
+        "validators": [
+
+            "null",
+
+            "datatype",
+
+            "duplicate",
+
+            "foreign_key"
+
+        ]
+    },
+    # =====================================================
+    # Shipment Cost
+    # =====================================================
+
+    "shipment_tracking": {
+
+        "file": "data/shipment_tracking.csv",
+
+        "primary_key": "cost_id",
+
+        "required_columns": [
+
+            "tracking_id",
+            "shipment_id",
+            "status",
+            "timestamp"
+
+        ],
+
+        "duplicate_columns": [
+
+            "tracking_id"
+
+        ],
+
+        "foreign_keys": {
+
+            "shipment_id": {
+
+                "table": "shipment",
+
+                "column": "shipment_id"
+
+            }
+
+        },
+
+        "data_types": {
+
+            "tracking_id": int,
+
+            "shipment_id": str,
+
+            "status": str,
+
+            "timestamp": "datetime",
 
         },
 
@@ -267,9 +345,7 @@ TABLE_CONFIG = {
 
             "duplicate",
 
-            "foreign_key",
-
-            "business"
+            "foreign_key"
 
         ]
     }

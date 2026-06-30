@@ -1,3 +1,5 @@
+from urllib.parse import quote_plus
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -14,7 +16,7 @@ class Database:
         self.engine = create_engine(
 
             f"mysql+pymysql://"
-            f"{db['username']}:{db['password']}"
+            f"{db['username']}:{quote_plus(db['password'])}"
             f"@{db['host']}:{db['port']}/{db['database']}",
 
             pool_size=10,

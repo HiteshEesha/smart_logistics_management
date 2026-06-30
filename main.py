@@ -105,7 +105,8 @@ for table_name, config in TABLE_CONFIG.items():
 
     print(f"Processing {table_name}")
 
-    df = CSVReader(config["file"]).read()
+    file = config["file"]
+    df = JSONReader(file).read() if file.endswith(".json") else CSVReader(file).read()
 
     df = ValidationService.validate(
         dataframe=df,

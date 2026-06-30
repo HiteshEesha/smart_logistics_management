@@ -91,6 +91,18 @@ class MySQLLoader:
             )
 
     #####################################################
+    # Sanitize dtypes
+    #####################################################
+
+    @staticmethod
+    def _sanitize_dtypes(dataframe):
+        df = dataframe.copy()
+        for col in df.columns:
+            if pd.api.types.is_extension_array_dtype(df[col]):
+                df[col] = df[col].where(df[col].notna(), other=None).astype(object)
+        return df
+
+    #####################################################
     # Bulk Insert
     #####################################################
 
@@ -100,6 +112,8 @@ class MySQLLoader:
             table_name):
 
         start = time.time()
+
+        dataframe = self._sanitize_dtypes(dataframe)
 
         logger.info(
             f"Loading {len(dataframe)} rows "
