@@ -35,10 +35,9 @@ def shipment_dashboard():
 def _kpi_section():
     totals = run_query("""
         SELECT
-            COUNT(*)                                                       AS total,
-            SUM(status = 'Delivered')                                      AS delivered,
-            SUM(status = 'Cancelled')                                      AS cancelled,
-            ROUND(AVG(DATEDIFF(delivery_date, order_date)), 1)             AS avg_delivery_days
+            COUNT(*)  AS total,
+            SUM(status = 'Delivered')  AS delivered,
+            SUM(status = 'Cancelled')  AS cancelled
         FROM shipment
     """)
 
@@ -51,15 +50,13 @@ def _kpi_section():
     total      = int(row["total"])
     delivered  = int(row["delivered"])
     cancelled  = int(row["cancelled"])
-    avg_days   = row["avg_delivery_days"]
     cost       = total_cost.iloc[0]["total_cost"]
 
-    c1, c2, c3, c4, c5 = st.columns(5)
+    c1, c2, c3, c4 = st.columns(4)
     c1.metric("Total Shipments",   total)
     c2.metric("Delivered %",       f"{delivered / total * 100:.1f}%")
     c3.metric("Cancelled %",       f"{cancelled / total * 100:.1f}%")
-    c4.metric("Avg Delivery Time", f"{avg_days} days")
-    c5.metric("Total Op. Cost",    f"${cost:,.2f}")
+    c4.metric("Total Op. Cost",    f"${cost:,.2f}")
 
     st.divider()
 
@@ -172,7 +169,7 @@ def _search_section():
 def _delivery_performance_section():
     route_perf = run_query("""
         SELECT origin, destination,
-               COUNT(*)                                                AS shipments,
+               COUNT(*)  AS shipments,
                ROUND(AVG(DATEDIFF(delivery_date, order_date)), 1)     AS avg_days
         FROM shipment
         WHERE delivery_date IS NOT NULL AND status = 'Delivered'
